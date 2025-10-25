@@ -4,25 +4,30 @@
 <head>
     <meta charset="UTF-8">
     <title>@yield('title', 'App Pegawai')</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+
 </head>
 
 <body>
-    <header>
-        <h1>@yield('page-title', 'App Pegawai')</h1>
-        <nav>
-            <ul>
-                <li><a href="{{ url('/employee') }}">Employee</a></li>
-                <li><a href="{{ url('/department') }}">Department</a></li>
-                <li><a href="{{ url('/attendance') }}">Attendance</a></li>
-                <li><a href="{{ url('/report') }}">Report</a></li>
-                <li><a href="{{ url('/settings') }}">Settings</a></li>
-            </ul>
-        </nav>
+    <header class="navbar">
+        <div class="container">
+            <a class="navbar-brand" href="{{ route('employees.index') }}">App Pegawai</a>
+            <nav class="nav-links">
+                <a href="{{ url('/employees') }}">Employee</a>
+                <a href="{{ url('/departments') }}">Department</a>
+                <a href="{{ url('/attendances') }}">Attendance</a>
+                <a href="{{ url('/positions') }}">Positions</a>
+                <a href="{{ url('/salaries') }}">Salary</a>
+            </nav>
+        </div>
     </header>
-    <main>
+
+    <main class="main-content">
         @yield('content')
     </main>
-    <footer>
+
+    <footer class="footer">
         <p>&copy; {{ date('Y') }} App Pegawai</p>
     </footer>
 </body>

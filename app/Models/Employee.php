@@ -15,22 +15,16 @@ class Employee extends Model
         'tanggal_masuk',
         'status',
         'departemen_id',
-        'jabatan_id'
+        'jabatan_id',
     ];
+
     public function department()
     {
-        return $this->belongsTo(Department::class, 'departemen_id');
+        return $this->belongsTo(Department::class, 'departemen_id'); // fk sesuai migrasi kamu
     }
+
     public function position()
     {
-        return $this->belongsTo(Position::class, 'jabatan_id');
-    }
-    public function attendances()
-    {
-        return $this->hasMany(Attendance::class, 'karyawan_id');
-    }
-    public function salaries()
-    {
-        return $this->hasMany(Salary::class, 'karyawan_id');
+        return $this->belongsTo(Position::class, 'jabatan_id'); // fk sesuai migrasi kamu
     }
 }

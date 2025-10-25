@@ -1,10 +1,27 @@
 @extends('master')
 @section('title', 'Daftar Pegawai')
+
 @section('content')
 <div class="container mt-5">
-    <h1 class="mb-4">Daftar Pegawai</h1>
-    <table border="1" cellpadding="5" cellspacing="0">
-        <thead>
+
+    {{-- Header dan tombol tambah (muncul hanya jika ada data) --}}
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="mb-0">Daftar Pegawai</h1>
+        @unless($employees->isEmpty())
+        <a href="{{ route('employees.create') }}" class="btn btn-primary btn-sm">+ Tambah Pegawai</a>
+        @endunless
+    </div>
+
+    {{-- Tampilkan jika belum ada data pegawai --}}
+    @if($employees->isEmpty())
+    <div class="alert alert-info d-flex justify-content-between align-items-center">
+        <div>Belum ada data pegawai.</div>
+        <a href="{{ route('employees.create') }}" class="btn btn-primary btn-sm">+ Tambah Pegawai</a>
+    </div>
+    @else
+    {{-- Tabel data pegawai --}}
+    <table class="table table-hover align-middle">
+        <thead class="table-dark">
             <tr>
                 <th>Nama Lengkap</th>
                 <th>Email</th>
@@ -13,7 +30,7 @@
                 <th>Alamat</th>
                 <th>Tanggal Masuk</th>
                 <th>Status</th>
-                <th>Aksi</th>
+                <th class="text-center" style="width:180px;">Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -25,19 +42,26 @@
                 <td>{{ $employee->tanggal_lahir }}</td>
                 <td>{{ $employee->alamat }}</td>
                 <td>{{ $employee->tanggal_masuk }}</td>
-                <td>{{ $employee->status }}</td>
+
                 <td>
-                    <a href="{{ route('employees.show', $employee->id) }}">Detail</a> |
-                    <a href="{{ route('employees.edit', $employee->id) }}">Edit</a> |
-                    <form action="{{ route('employees.destroy', $employee->id) }}" method="POST" style="display:inline;">
+                    <span class="badge {{ $employee->status === 'aktif' ? 'bg-success' : 'bg-secondary' }}">
+                        {{ ucfirst($employee->status) }}
+                    </span>
+                </td>
+                <td class="text-center">
+                    <a href="{{ route('employees.show', $employee->id) }}" class="btn btn-sm btn-outline-secondary">Detail</a>
+                    <a href="{{ route('employees.edit', $employee->id) }}" class="btn btn-sm btn-outline-primary">Edit</a>
+                    <form action="{{ route('employees.destroy', $employee->id) }}" method="POST" class="d-inline">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" onclick="return confirm('Yakin ingin menghapus?')">Delete</button>
+                        <button class="btn btn-sm btn-outline-danger"
+                            onclick="return confirm('Yakin ingin menghapus data ini?')">Hapus</button>
                     </form>
                 </td>
             </tr>
             @endforeach
         </tbody>
     </table>
+    @endif
 </div>
 @endsection

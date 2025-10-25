@@ -14,6 +14,7 @@ class AttendanceController extends Controller
     public function index()
     {
         $attendances = Attendance::with('employee')->latest()->paginate(10);
+        $attendances = Attendance::with('employee')->latest()->paginate(10);
         return view('attendances.index', compact('attendances'));
     }
 
@@ -53,31 +54,31 @@ class AttendanceController extends Controller
         return view('attendances.show', compact('attendance'));
     }
 
+
     /**
      * Form edit absensi.
      */
     public function edit(Attendance $attendance)
     {
-        $employees = Employee::orderBy('nama_lengkap')->get();
+        $employees = \App\Models\Employee::orderBy('nama_lengkap')->get();
         return view('attendances.edit', compact('attendance', 'employees'));
     }
 
     /**
      * Update data absensi.
      */
-    public function update(Request $request, Attendance $attendance)
+    public function update(Request $request,        \App\Models\Attendance $attendance)
     {
         $data = $request->validate([
-            'karyawan_id'    => 'required|exists:employees,id',
-            'tanggal'        => 'required|date',
-            'waktu_masuk'    => 'nullable|date_format:H:i',
-            'waktu_keluar'   => 'nullable|date_format:H:i',
-            'status_absensi' => 'required|in:hadir,izin,sakit,alpha',
+            'karyawan_id'     => 'required|exists:employees,id',
+            'tanggal'         => 'required|date',
+            'waktu_masuk'     => 'nullable|date_format:H:i',
+            'waktu_keluar'    => 'nullable|date_format:H:i',
+            'status_absensi'  => 'required|in:hadir,izin,sakit,alpha',
         ]);
 
         $attendance->update($data);
-
-        return redirect()->route('attendances.index')->with('ok', 'Data absensi berhasil diperbarui.');
+        return redirect()->route('attendances.index')->with('success', 'Absensi berhasil diperbarui.');
     }
 
     /**
